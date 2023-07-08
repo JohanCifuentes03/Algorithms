@@ -1,6 +1,6 @@
 package org.Fundamentals.ProgrammingModel;
 
-public class AbsPrime {
+public class MathProblems {
     public static double abs(double x ){
         if(x < 0.0) return -x;
         else return x;
@@ -31,6 +31,25 @@ public class AbsPrime {
             number++;
         }
     }
+
+
+    public static double sqrt(double c){
+        if(c < 0 ) return Double.NaN;
+        double err = 1e-15;
+        double t = c;
+        while(Math.abs(t - c/t) > err * t){
+            t = (c/t + t) / 2.0;
+
+        }
+        return  t;
+    }
+
+
+    public static double hypotenuse(double a, double b){
+        return (a*a + b*b);
+    }
+
+
 
     public static void main(String[] args) {
     }
