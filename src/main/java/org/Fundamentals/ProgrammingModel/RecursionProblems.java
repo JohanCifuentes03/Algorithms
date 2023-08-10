@@ -1,5 +1,8 @@
 package org.Fundamentals.ProgrammingModel;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class RecursionProblems {
 
 
@@ -29,13 +32,46 @@ public class RecursionProblems {
 
     }
 
-    //public static int isArrayInSortedOrden(int A[], int n){
+    public static void backtrackingSum(int n, LinkedList<Integer> list, int sum){
 
-    //}
+
+        for(int i = 1; i <= n; i++){
+            if(n == sum) {
+                System.out.println(list);
+                return;
+            }
+
+            sum = sum + i;
+            if (sum <= n){
+                list.add(i);
+                backtrackingSum(n, list, sum);
+                list.removeLast();
+            }
+            sum = sum - i;
+        }
+    }
+
+    public static int isArrayInSortedOrder(int A[], int n){
+        if (n == 1) return 1;
+
+        return (A[n-1] < A[n] ? isArrayInSortedOrder(A, n - 1) : 0);
+    }
+
+
+
+
+
+
 
 
     public static void main(String[] args) {
+        //int[] array = {1, 4, 3, 4, 5};
+        int n = 15;
+        LinkedList<Integer> nums = new LinkedList<>();
+        backtrackingSum(n,nums,0);
         //System.out.println(recursiveSum(10));
-        towerOfHanoi(4, 'A', 'C', 'B');
+        //towerOfHanoi(4, 'A', 'C', 'B');
+        //System.out.println(isArrayInSortedOrder(array, array.length - 1));
+
     }
 }
