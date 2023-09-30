@@ -1,0 +1,568 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyN68eriZrzbUt9fABw/mQZZ",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/JohanCifuentes03/Algorithms/blob/main/botellas-envoluturas-carton\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "id": "pWFeWDGU0Gtu"
+      },
+      "outputs": [],
+      "source": [
+        "## Crear carpeta para subir imagenes\n",
+        "!mkdir carton\n",
+        "!mkdir botellas\n",
+        "!mkdir envolturas\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## Entrar en cada carpeta y descomprimir el archivo Zip\n",
+        "%cd botellas\n",
+        "!unzip Botellas.zip\n",
+        "%cd ..\n",
+        "\n",
+        "%cd carton\n",
+        "!unzip cartonn.zip\n",
+        "%cd ..\n",
+        "\n",
+        "%cd envolturas\n",
+        "!unzip Envolturas.zip\n",
+        "%cd ..\n"
+      ],
+      "metadata": {
+        "id": "XsSWDvd903of"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## Borrar archivos Zip\n",
+        "!rm -rf /content/botellas/Botellas.zip\n",
+        "!rm -rf /content/carton/cartonn.zip\n",
+        "!rm -rf /content/envolturas/Envolturas.zip"
+      ],
+      "metadata": {
+        "id": "s0fRPQsJ2MqP"
+      },
+      "execution_count": 5,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## Mostrar imagenes de cada categoria\n",
+        "!ls /content/botellas | wc -l # 409\n",
+        "!ls /content/carton | wc -l # 344\n",
+        "!ls /content/envolturas | wc -l # 409\n",
+        "\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "bddjESzQ2hHf",
+        "outputId": "88c4d6a5-7f84-43d6-8ce3-d27cc5eda35d"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "409\n",
+            "344\n",
+            "409\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## Mostrar algunas imagenes con pyplot\n",
+        "import os\n",
+        "import matplotlib.pyplot as plt\n",
+        "import matplotlib.image as mpimg\n",
+        "\n",
+        "plt.figure(figsize = (15, 15))\n",
+        "\n",
+        "carpeta  = '/content/botellas'\n",
+        "imagenes = os.listdir(carpeta)\n",
+        "\n",
+        "for i, nombre_img in enumerate(imagenes[:25]):\n",
+        "  plt.subplot ( 5, 5, i + 1 )\n",
+        "  imagen = mpimg.imread(carpeta + '/' + nombre_img )\n",
+        "  plt.imshow(imagen)"
+      ],
+      "metadata": {
+        "id": "_38yQ7lt67AQ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## Crear carpetas para hacer el set de datos\n",
+        "\n",
+        "!mkdir dataset\n",
+        "!mkdir dataset/botellas\n",
+        "!mkdir dataset/envolturas\n",
+        "!mkdir dataset/carton\n"
+      ],
+      "metadata": {
+        "id": "6VHVRD0X9kW_"
+      },
+      "execution_count": 8,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import os\n",
+        "import shutil\n",
+        "\n",
+        "carpeta_fuente = '/content/botellas'\n",
+        "carpeta_destino = '/content/dataset/botellas'\n",
+        "\n",
+        "imagenes = os.listdir(carpeta_fuente)\n",
+        "\n",
+        "for i, nombre_img in enumerate(imagenes):\n",
+        "    if i < 344:\n",
+        "        ruta_fuente = os.path.join(carpeta_fuente, nombre_img)\n",
+        "        ruta_destino = os.path.join(carpeta_destino, nombre_img)\n",
+        "\n",
+        "        # Verifica si la ruta_fuente es un archivo antes de copiar\n",
+        "        if os.path.isfile(ruta_fuente):\n",
+        "            # Copia de la carpeta fuente a destino\n",
+        "            shutil.copy(ruta_fuente, ruta_destino)\n",
+        "        else:\n",
+        "            print(f\"Advertencia: '{nombre_img}' no es un archivo y se omitirá.\")\n",
+        "    else:\n",
+        "        break  # Sal del bucle después de copiar las primeras 344 imágenes\n"
+      ],
+      "metadata": {
+        "id": "YSSjeOJqATHQ"
+      },
+      "execution_count": 9,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import os\n",
+        "import shutil\n",
+        "\n",
+        "carpeta_fuente = '/content/carton'\n",
+        "carpeta_destino = '/content/dataset/carton'\n",
+        "\n",
+        "imagenes = os.listdir(carpeta_fuente)\n",
+        "\n",
+        "for i, nombre_img in enumerate(imagenes):\n",
+        "    if i < 344:\n",
+        "        ruta_fuente = os.path.join(carpeta_fuente, nombre_img)\n",
+        "        ruta_destino = os.path.join(carpeta_destino, nombre_img)\n",
+        "\n",
+        "        # Verifica si la ruta_fuente es un archivo antes de copiar\n",
+        "        if os.path.isfile(ruta_fuente):\n",
+        "            # Copia de la carpeta fuente a destino\n",
+        "            shutil.copy(ruta_fuente, ruta_destino)\n",
+        "        else:\n",
+        "            print(f\"Advertencia: '{nombre_img}' no es un archivo y se omitirá.\")\n",
+        "    else:\n",
+        "        break  # Sal del bucle después de copiar las primeras 344 imágenes\n"
+      ],
+      "metadata": {
+        "id": "nbvsbaULAcjY"
+      },
+      "execution_count": 10,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import os\n",
+        "import shutil\n",
+        "\n",
+        "carpeta_fuente = '/content/envolturas'\n",
+        "carpeta_destino = '/content/dataset/envolturas'\n",
+        "\n",
+        "imagenes = os.listdir(carpeta_fuente)\n",
+        "\n",
+        "for i, nombre_img in enumerate(imagenes):\n",
+        "    if i < 344:\n",
+        "        ruta_fuente = os.path.join(carpeta_fuente, nombre_img)\n",
+        "        ruta_destino = os.path.join(carpeta_destino, nombre_img)\n",
+        "\n",
+        "        # Verifica si la ruta_fuente es un archivo antes de copiar\n",
+        "        if os.path.isfile(ruta_fuente):\n",
+        "            # Copia de la carpeta fuente a destino\n",
+        "            shutil.copy(ruta_fuente, ruta_destino)\n",
+        "        else:\n",
+        "            print(f\"Advertencia: '{nombre_img}' no es un archivo y se omitirá.\")\n",
+        "    else:\n",
+        "        break  # Sal del bucle después de copiar las primeras 344 imágenes\n"
+      ],
+      "metadata": {
+        "id": "vE7poGYHAfPY"
+      },
+      "execution_count": 11,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## Mostrar imagenes de cada categoria del dataset\n",
+        "!ls /content/dataset/botellas | wc -l   # 343\n",
+        "!ls /content/dataset/carton | wc -l     # 343\n",
+        "!ls /content/dataset/envolturas | wc -l # 343"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "X7vMVdjPAwjI",
+        "outputId": "6e2fcd40-ffa0-4474-caee-dc323bbc1855"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "344\n",
+            "344\n",
+            "344\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from tensorflow.keras.preprocessing.image import ImageDataGenerator\n",
+        "import numpy as np\n",
+        "\n",
+        "# Crear el generador de datos de imagen\n",
+        "datagen = ImageDataGenerator(\n",
+        "    rescale=1. / 255,\n",
+        "    rotation_range=30,\n",
+        "    width_shift_range=0.25,\n",
+        "    height_shift_range=0.25,\n",
+        "    shear_range=0.15,\n",
+        "    zoom_range=[0.5, 1.5],\n",
+        "    validation_split=0.2  # 20 % para pruebas\n",
+        ")\n",
+        "\n",
+        "# Generadores para conjuntos de entrenamiento y pruebas\n",
+        "data_gen_entrenamiento = datagen.flow_from_directory('/content/dataset', target_size=(224, 224),\n",
+        "                                                     batch_size=32, shuffle=True, subset='training')\n",
+        "data_gen_pruebas = datagen.flow_from_directory('/content/dataset', target_size=(224, 224),\n",
+        "                                               batch_size=32, shuffle=True, subset='validation')\n",
+        "\n",
+        "# Imprimir 10 imágenes del generador de entrenamiento\n",
+        "for imagen, etiqueta in data_gen_entrenamiento:\n",
+        "    for i in range(10):\n",
+        "        plt.subplot(2, 5, i + 1)\n",
+        "        plt.xticks([])\n",
+        "        plt.yticks([])\n",
+        "        plt.imshow(imagen[i])\n",
+        "    break  # Salir después de mostrar una sola vez\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "xy5y8Lajhz9h"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import tensorflow as tf\n",
+        "import tensorflow_hub as hub\n",
+        "\n",
+        "url = \"https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4\"\n",
+        "mobilenetv2 = hub.KerasLayer(url, input_shape = (224, 224, 3))\n",
+        "\n",
+        "## Congelar modelo descargado\n",
+        "mobilenetv2.trainable = False"
+      ],
+      "metadata": {
+        "id": "OPptdVo0iSyp"
+      },
+      "execution_count": 18,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "modelo = tf.keras.Sequential([\n",
+        "    mobilenetv2,\n",
+        "    tf.keras.layers.Dense(3, activation = 'softmax')\n",
+        "])"
+      ],
+      "metadata": {
+        "id": "QthZ1mN0je3Z"
+      },
+      "execution_count": 19,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "modelo.summary()"
+      ],
+      "metadata": {
+        "id": "Mflak2Q3j29o"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## Compilar el modelo\n",
+        "modelo.compile(\n",
+        "    optimizer = 'adam',\n",
+        "    loss = 'categorical_crossentropy',\n",
+        "    metrics = ['accuracy']\n",
+        ")"
+      ],
+      "metadata": {
+        "id": "uhQl2XWgj_IA"
+      },
+      "execution_count": 21,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## Entrenar el modelo\n",
+        "EPOCAS = 50\n",
+        "\n",
+        "historial = modelo.fit(\n",
+        "    data_gen_entrenamiento, epochs = EPOCAS, batch_size = 32,\n",
+        "    validation_data = data_gen_pruebas\n",
+        ")"
+      ],
+      "metadata": {
+        "id": "HIILvo5vkRxY"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "\n",
+        "# Obtener datos de precisión y pérdida del historial\n",
+        "acc = historial.history['accuracy']\n",
+        "val_acc = historial.history['val_accuracy']\n",
+        "loss = historial.history['loss']\n",
+        "val_loss = historial.history['val_loss']\n",
+        "\n",
+        "# Rango de épocas\n",
+        "rango_epocas = range(len(acc))\n",
+        "\n",
+        "# Crear una figura con dos subtramas\n",
+        "plt.figure(figsize=(12, 5))\n",
+        "\n",
+        "# Subtrama para precisión\n",
+        "plt.subplot(1, 2, 1)\n",
+        "plt.plot(rango_epocas, acc, label=\"Precisión Entrenamiento\")\n",
+        "plt.plot(rango_epocas, val_acc, label=\"Precisión Pruebas\")\n",
+        "plt.legend(loc='lower right')\n",
+        "plt.title('Precisión de Entrenamiento y Pruebas')\n",
+        "plt.xlabel('Épocas')\n",
+        "plt.ylabel('Precisión')\n",
+        "plt.grid(True)\n",
+        "\n",
+        "# Subtrama para pérdida\n",
+        "plt.subplot(1, 2, 2)\n",
+        "plt.plot(rango_epocas, loss, label=\"Pérdida Entrenamiento\")\n",
+        "plt.plot(rango_epocas, val_loss, label=\"Pérdida Pruebas\")\n",
+        "plt.legend(loc='upper right')\n",
+        "plt.title('Pérdida de Entrenamiento y Pruebas')\n",
+        "plt.xlabel('Épocas')\n",
+        "plt.ylabel('Pérdida')\n",
+        "plt.grid(True)\n",
+        "\n",
+        "# Ajustar el espaciado entre las subtramas\n",
+        "plt.tight_layout()\n",
+        "\n",
+        "# Mostrar las gráficas\n",
+        "plt.show()\n"
+      ],
+      "metadata": {
+        "id": "Sa15MD5u0YJM"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import requests\n",
+        "from io import BytesIO\n",
+        "import cv2\n",
+        "from PIL import Image\n",
+        "import numpy as np\n",
+        "\n",
+        "def categorizar(url, modelo):\n",
+        "    # Descargar la imagen desde la URL\n",
+        "    respuesta = requests.get(url)\n",
+        "\n",
+        "    # Verificar si la solicitud fue exitosa\n",
+        "    if respuesta.status_code == 200:\n",
+        "        # Leer la imagen desde BytesIO\n",
+        "        img = Image.open(BytesIO(respuesta.content))\n",
+        "\n",
+        "        # Redimensionar la imagen a 224x224 (asumiendo que el modelo lo requiere)\n",
+        "        img = img.resize((224, 224))\n",
+        "\n",
+        "        # Convertir la imagen a un arreglo numpy y normalizar los valores\n",
+        "        img = np.array(img).astype(float) / 255.0\n",
+        "\n",
+        "        # Realizar la predicción usando el modelo\n",
+        "        prediccion = modelo.predict(img.reshape(-1, 224, 224, 3))\n",
+        "\n",
+        "        # Obtener la categoría predicha (índice de la clase con mayor probabilidad)\n",
+        "        categoria_predicha = np.argmax(prediccion)\n",
+        "\n",
+        "        return categoria_predicha\n",
+        "    else:\n",
+        "        print(\"Error al descargar la imagen.\")\n",
+        "        return None\n",
+        "\n",
+        "# Llama a la función categorizar con la URL de la imagen y el modelo entrenado\n",
+        "# Ejemplo de uso:\n",
+        "# resultado = categorizar('URL_DE_LA_IMAGEN', modelo)\n",
+        "# Donde 'URL_DE_LA_IMAGEN' es la URL de la imagen que deseas categorizar.\n",
+        "# 'modelo' debe ser reemplazado por tu modelo entrenado previamente.\n"
+      ],
+      "metadata": {
+        "id": "RzG-XIxz24T7"
+      },
+      "execution_count": 28,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Botellas plasticas 0, # carton 1, # Envolturas 2\n",
+        "url = \"https://encolombia.com/wp-content/uploads/2021/03/Reciclaje-de-Carton.jpg\"\n",
+        "prediccion= categorizar(url, modelo)\n",
+        "print(prediccion)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6EhlMW1T2kW1",
+        "outputId": "4f09b358-b8dd-41ab-ebed-61b10f0548a5"
+      },
+      "execution_count": 54,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "1/1 [==============================] - 0s 74ms/step\n",
+            "1\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "modelo.save('botellas-carton-envolturas-cnn-ad.keras')\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "fqDhYy2PACP-"
+      },
+      "execution_count": 56,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install tensorflowjs"
+      ],
+      "metadata": {
+        "id": "q6tut9c0AYz3"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!mkdir carpeta_salida\n"
+      ],
+      "metadata": {
+        "id": "0zVaJS-vAzVW"
+      },
+      "execution_count": 59,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!tensorflowjs_converter --input_format keras botellas-carton-envolturas-cnn-ad.h5 carpeta_salida"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "SYarlov1A38G",
+        "outputId": "66de629b-b294-4196-9704-1461d08e6966"
+      },
+      "execution_count": 62,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "2023-09-30 21:37:06.486351: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:9342] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered\n",
+            "2023-09-30 21:37:06.486435: E tensorflow/compiler/xla/stream_executor/cuda/cuda_fft.cc:609] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered\n",
+            "2023-09-30 21:37:06.486494: E tensorflow/compiler/xla/stream_executor/cuda/cuda_blas.cc:1518] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered\n",
+            "2023-09-30 21:37:08.437362: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
